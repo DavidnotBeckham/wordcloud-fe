@@ -19,6 +19,7 @@ const App = () => {
     axios
       .get(url)
       .then((res) => {
+        console.log('Data received:', res.data); // 데이터 수신 확인
         if (Array.isArray(res.data)) {
           setWords(res.data);
         } else {
@@ -50,7 +51,7 @@ const App = () => {
         Generate Word Cloud
       </button>
       <div>
-        {words.length > 0 && (
+        {words.length > 0 ? (
           <Wordcloud
             data={words}
             fontSizeMapper={fontSizeMapper}
@@ -62,6 +63,8 @@ const App = () => {
             height={400}
             padding={2}
           />
+        ) : (
+          <p>Click the button to generate the word cloud</p>
         )}
         <ReactTooltip
           anchorSelect=".wordcloud-word" // 툴팁을 적용할 요소 선택자
