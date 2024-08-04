@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Wordcloud from 'react-d3-cloud';
 import axios from 'axios';
-import { Tooltip } from 'react-tooltip'; // 올바른 import 문
+import { Tooltip as ReactTooltip } from 'react-tooltip'; // 올바른 import 문
 
 const App = () => {
   const [words, setWords] = useState([]);
@@ -30,10 +30,6 @@ const App = () => {
       });
   };
 
-  useEffect(() => {
-    getWorldCloud();
-  }, []);
-
   const fontSizeMapper = (word) => Math.log2(word.value) * 5;
 
   const rotate = () => 0; // 단어를 수평으로 유지
@@ -44,12 +40,16 @@ const App = () => {
         width: '100%',
         height: '100vh',
         display: 'flex',
+        flexDirection: 'column', // 세로 방향으로 정렬
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F0F8FF',
       }}
     >
-      <div data-tooltip-id="wordcloud">
+      <button onClick={getWorldCloud} style={{ marginBottom: '20px', padding: '10px 20px', fontSize: '16px' }}>
+        Generate Word Cloud
+      </button>
+      <div>
         {words.length > 0 && (
           <Wordcloud
             data={words}
@@ -63,9 +63,12 @@ const App = () => {
             padding={2}
           />
         )}
-        <Tooltip id="wordcloud" place="top" effect="solid">
-          <span>Click on words to explore more!</span>
-        </Tooltip>
+        <ReactTooltip
+          anchorSelect=".wordcloud-word" // 툴팁을 적용할 요소 선택자
+          place="top"
+          effect="solid"
+          content="Click on words to explore more!"
+        />
       </div>
     </div>
   );
